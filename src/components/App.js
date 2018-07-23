@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import queryString from "query-string";
+import React, { Component } from 'react';
+import queryString from 'query-string';
 //Theme and styling
-import BeastTheme from "./style/BeastTheme";
-import NewZIndex from "./style/NewZIndex";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import "./style/App.css";
-import { CSSTransitionGroup } from "react-transition-group"; //entering animation
+import BeastTheme from '../style/BeastTheme';
+import NewZIndex from '../style/NewZIndex';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import '../style/App.css';
+import { CSSTransitionGroup } from 'react-transition-group'; //entering animation
 //Components
-import Nav from "./Components/NavBar";
-import SearchBar from "./Components/SearchBar";
-import SideBar from "./Components/SideBar.jsx";
-import GoogleMap from "./Components/GoogleMap";
-import MeetUp from "./Components/MeetUp";
+import Nav from './NavBar';
+import SearchBar from './SearchBar';
+import SideBar from './SideBar.jsx';
+import GoogleMap from './GoogleMap';
+import MeetUp from './MeetUp';
 
 //API
-import { categories } from "./api/MeetUpAPI";
-import DarkSkyApi, { getWeatherData } from "./api/DarkSkyApi";
-import { log } from "util";
+import { categories } from '../api/MeetUpAPI';
+import DarkSkyApi, { getWeatherData } from '../api/DarkSkyApi';
+import { log } from 'util';
 
 class App extends Component {
   constructor(props) {
@@ -33,17 +33,17 @@ class App extends Component {
         lng: -121.487503,
       },
       search: {
-        city: "",
+        city: '',
         radius: 1,
         category: 0,
       },
       query: {
         update: false,
-        loc: "",
+        loc: '',
         rad: null,
         cat: null,
       },
-      searchError: "",
+      searchError: '',
       showingInfoWindow: false,
     };
     this.pushHistory = this.pushHistory.bind(this);
@@ -59,7 +59,7 @@ class App extends Component {
     this.setSearch = this.setSearch.bind(this);
   }
   sideBarClick = num => {
-    if(num !== null){
+    if (num !== null) {
       var meets = this.state.events.slice(0);
       getWeatherData(meets[num]).then(meetWithWeather => {
         meets[num] = meetWithWeather;
@@ -74,8 +74,7 @@ class App extends Component {
         showingInfoWindow: true,
         activeEvent: num,
       });
-    }
-    else{
+    } else {
       this.setState({
         showingInfoWindow: false,
         activeEvent: num,
@@ -90,16 +89,16 @@ class App extends Component {
     };
     var qstr = queryString.stringify(searchQuery);
 
-    var qstrcmp = "?" + qstr;
+    var qstrcmp = '?' + qstr;
     if (qstrcmp.localeCompare(this.props.location.search) !== 0) {
       this.props.history.push({
-        pathname: "/project1/search",
+        pathname: '/search',
         search: qstrcmp,
       });
     }
   }
   getMeetUps(status, circleOptions, meetupArray) {
-    if (status === "OK") {
+    if (status === 'OK') {
       var radius = this.milesToMeters(circleOptions.radius);
       var newLatLng = new this.google.maps.LatLng(
         circleOptions.center.lat,
@@ -107,12 +106,12 @@ class App extends Component {
       );
       var circleOpts = {
         center: newLatLng,
-        radius: radius*0.5,
+        radius: radius * 0.5,
       };
       var circle = new this.google.maps.Circle(circleOpts);
       this.map.fitBounds(circle.getBounds());
       this.setState({
-        searchError: "",
+        searchError: '',
         events: meetupArray,
         showingInfoWindow: false,
         activeEvent: null,
@@ -176,10 +175,10 @@ class App extends Component {
     this.google = google;
     this.map = map;
     this.autoComplete = new google.maps.places.Autocomplete(
-      document.getElementById("citySearchField")
+      document.getElementById('citySearchField')
     );
-    this.autoComplete.bindTo("bounds", this.map);
-    this.autoComplete.addListener("place_changed", this.setPlace);
+    this.autoComplete.bindTo('bounds', this.map);
+    this.autoComplete.addListener('place_changed', this.setPlace);
     this.geocoder = new google.maps.Geocoder();
     this.forceUpdate();
   }
@@ -258,7 +257,7 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     var searchQuery;
     if (
-      this.props.history.action === "POP" &&
+      this.props.history.action === 'POP' &&
       this.props.location.search &&
       this.props.location.search !== prevProps.location.search
     ) {
@@ -310,13 +309,13 @@ class App extends Component {
           />
           {this.state.loading && (
             <img
-              src={require("./img/Loader/loader.gif")}
+              src={require('../img/Loader/loader.gif')}
               alt="loading.."
               style={{
                 zIndex: 5,
-                position: "absolute",
-                top: "50%",
-                left: "50%",
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
                 width: 100,
               }}
             />

@@ -6,7 +6,6 @@ import BeastTheme from '../style/BeastTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
-import { relative } from 'path';
 
 const style = {
   height: 70,
@@ -38,8 +37,8 @@ export default class InfoDisplay extends Component {
           <p style={styleP}>W {props.windSpeed}</p>
         </Paper>
         {props.hourly &&
-          props.hourly.map((val) => {
-              return this._renderHourlyWeather(val);
+          props.hourly.map(val => {
+            return this._renderHourlyWeather(val);
           })}
       </div>
     );
@@ -51,7 +50,7 @@ export default class InfoDisplay extends Component {
     if (hour == 0) hour = '12:00 AM';
     else if (hour == 12) hour = '12:00 PM';
     else if (hour < 12) hour = hour + ':00 AM';
-    else hour = hour % 12 + ':00 PM';
+    else hour = (hour % 12) + ':00 PM';
 
     return (
       <Paper style={style} zDepth={2} key={val[0].time}>
@@ -95,27 +94,38 @@ export default class InfoDisplay extends Component {
         'linear-gradient(rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,1))',
     };
     return (
-      <div style={{maxHeight:370, maxWidth:350}}>
-      <h2>{this.props.event.name}</h2>
+      <div style={{ maxHeight: 370, maxWidth: 350 }}>
+        <h2>{this.props.event.name}</h2>
 
-      <h3>Start time: {date.toLocaleString()}
-      {this.props.canLike ? (
+        <h3>
+          Start time: {date.toLocaleString()}
+          {this.props.canLike ? (
             <div>
-            <span>Likes:</span>
-            <span> {this.props.eventLikes}</span>
-            <img src={require('../img/like/like.png')} style ={{height:'1em', cursor: 'pointer',marginLeft:'0.5em'}} id="like"/>
+              <span>Likes:</span>
+              <span> {this.props.eventLikes}</span>
+              <img
+                src={require('../img/like/like.png')}
+                style={{
+                  height: '1em',
+                  cursor: 'pointer',
+                  marginLeft: '0.5em',
+                }}
+                id="like"
+              />
             </div>
           ) : (
-            <div styles={{marginLeft: 20}}>
-            <span>Likes:</span>
-            <span> {this.props.eventLikes}</span>
+            <div styles={{ marginLeft: 20 }}>
+              <span>Likes:</span>
+              <span> {this.props.eventLikes}</span>
             </div>
           )}
-      </h3>
-      
-      {this.props.event.weather && <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme)}>
-          {this._renderWeather(this.props.event.weather)}
-        </MuiThemeProvider>}
+        </h3>
+
+        {this.props.event.weather && (
+          <MuiThemeProvider muiTheme={getMuiTheme(BeastTheme)}>
+            {this._renderWeather(this.props.event.weather)}
+          </MuiThemeProvider>
+        )}
         {/* <div>{this._renderHourlyWeather(this.props.event.weather)}</div> */}
         <a href={this.props.event.link}>Learn More</a>
       </div>
